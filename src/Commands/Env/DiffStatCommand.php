@@ -5,7 +5,7 @@ namespace Pantheon\Terminus\Commands\Env;
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class DiffStatCommand
@@ -13,7 +13,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class DiffStatCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Displays the diff of uncommitted code changes on the development environment.
@@ -34,7 +34,7 @@ class DiffStatCommand extends TerminusCommand implements SiteAwareInterface
      */
     public function diffstat($site_env)
     {
-        list(, $env) = $this->getSiteEnv($site_env);
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env);
         $diff = (array)$env->diffstat();
         $data = [];
         if (empty($diff)) {

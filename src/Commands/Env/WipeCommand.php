@@ -4,7 +4,7 @@ namespace Pantheon\Terminus\Commands\Env;
 
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class WipeCommand
@@ -13,7 +13,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class WipeCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Deletes all files and database content in the environment.
@@ -30,7 +30,7 @@ class WipeCommand extends TerminusCommand implements SiteAwareInterface
      */
     public function wipe($site_env)
     {
-        list($site, $env) = $this->getSiteEnv($site_env);
+        list($site, $env) = $this->getUnfrozenSiteEnv($site_env);
 
         $tr = ['site' => $site->getName(), 'env' => $env->getName()];
         if (!$this->confirm('Are you sure you want to wipe {env} on {site}?', $tr)) {

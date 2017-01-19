@@ -250,13 +250,10 @@ class Site extends TerminusModel implements ConfigAwareInterface, ContainerAware
             'holder_type' => $this->get('holder_type'),
             'holder_id' => $this->get('holder_id'),
             'owner' => $this->get('owner'),
+            'frozen' => is_null($this->get('frozen')) ? 'false' : 'true',
         ];
-        if ($this->has('frozen')) {
-            $data['frozen'] = true;
-        }
         if (!is_null($data['php_version'])) {
-            $data['php_version'] = substr($data['php_version'], 0, 1)
-                . '.' . substr($data['php_version'], 1, 1);
+            $data['php_version'] = substr($data['php_version'], 0, 1) . '.' . substr($data['php_version'], 1, 1);
         }
         if (isset($this->tags)) {
             $data['tags'] = implode(',', (array)$this->tags->ids());

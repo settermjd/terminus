@@ -4,7 +4,7 @@ namespace Pantheon\Terminus\Commands\Env;
 
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class DeployCommand
@@ -12,7 +12,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class DeployCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Deploys code to the Test or Live environment.
@@ -48,7 +48,7 @@ class DeployCommand extends TerminusCommand implements SiteAwareInterface
         $site_env,
         $options = ['sync-content' => false, 'note' => 'Deploy from Terminus', 'cc' => false, 'updatedb' => false,]
     ) {
-        list(, $env) = $this->getSiteEnv($site_env, 'dev');
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env, 'dev');
 
         if ($env->isInitialized()) {
             if (!$env->hasDeployableCode()) {

@@ -7,13 +7,13 @@ use League\Container\ContainerAwareTrait;
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Helpers\LocalMachineHelper;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
 use Pantheon\Terminus\Exceptions\TerminusException;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 class ViewCommand extends TerminusCommand implements SiteAwareInterface, ContainerAwareInterface
 {
-    use SiteAwareTrait;
     use ContainerAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Displays the URL for the environment or opens the environment in a browser.
@@ -36,7 +36,7 @@ class ViewCommand extends TerminusCommand implements SiteAwareInterface, Contain
      */
     public function view($site_env, $options = ['print' => false,])
     {
-        list(, $env) = $this->getSiteEnv($site_env);
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env);
 
         $domain = $env->domain();
         $protocol = 'http';

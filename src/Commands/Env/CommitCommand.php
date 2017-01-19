@@ -4,7 +4,7 @@ namespace Pantheon\Terminus\Commands\Env;
 
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class CommitCommand
@@ -12,7 +12,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class CommitCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Commits code changes on the development environment.
@@ -32,7 +32,7 @@ class CommitCommand extends TerminusCommand implements SiteAwareInterface
      */
     public function commit($site_env, $options = ['message' => 'Terminus commit.'])
     {
-        list(, $env) = $this->getSiteEnv($site_env, 'dev');
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env, 'dev');
 
         $change_count = count((array)$env->diffstat());
         if ($change_count === 0) {

@@ -4,8 +4,9 @@ namespace Pantheon\Terminus\Commands\Env;
 
 use Consolidation\OutputFormatters\StructuredData\PropertyList;
 use Pantheon\Terminus\Commands\TerminusCommand;
+use Pantheon\Terminus\Exceptions\TerminusException;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class InfoCommand
@@ -13,7 +14,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class InfoCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Displays environment status and configuration.
@@ -33,6 +34,7 @@ class InfoCommand extends TerminusCommand implements SiteAwareInterface
      *     php_version: PHP Version
      *     drush_version: Drush Version
      * @return PropertyList
+     * @throws TerminusException
      *
      * @param string $site_env Site & environment in the format `site-name.env`
      *
@@ -41,7 +43,7 @@ class InfoCommand extends TerminusCommand implements SiteAwareInterface
      */
     public function info($site_env)
     {
-        list(, $env) = $this->getSiteEnv($site_env);
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env);
         return new PropertyList($env->serialize());
     }
 }

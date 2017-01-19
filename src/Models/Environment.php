@@ -717,7 +717,7 @@ class Environment extends TerminusModel implements ConfigAwareInterface, Contain
      */
     public function serialize()
     {
-        $info = [
+        $data = [
             'id' => $this->id,
             'created' => date($this->getConfig()->get('date_format'), $this->get('environment_created')),
             'domain' => $this->domain(),
@@ -727,7 +727,7 @@ class Environment extends TerminusModel implements ConfigAwareInterface, Contain
             'connection_mode' => $this->get('connection_mode'),
             'php_version' => $this->get('php_version'),
         ];
-        return $info;
+        return $data;
     }
 
     /**
@@ -938,7 +938,8 @@ class Environment extends TerminusModel implements ConfigAwareInterface, Contain
             $data->connection_mode = 'git';
         }
         if (property_exists($data, 'php_version')) {
-            $data->php_version = substr($data->php_version, 0, 1) . '.' . substr($data->php_version, 1, 1);
+            // This will work until PHP 10.0.
+            $data->php_version = substr($data->php_version, 0, 1) . '.' . substr($data->php_version, 1);
         } else {
             $data->php_version = $this->getSite()->get('php_version');
         }

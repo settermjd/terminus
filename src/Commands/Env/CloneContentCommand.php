@@ -5,7 +5,7 @@ namespace Pantheon\Terminus\Commands\Env;
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Exceptions\TerminusException;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class CloneContentCommand
@@ -13,7 +13,7 @@ use Pantheon\Terminus\Site\SiteAwareTrait;
  */
 class CloneContentCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Clones database/files from one environment to another environment.
@@ -43,7 +43,7 @@ class CloneContentCommand extends TerminusCommand implements SiteAwareInterface
             throw new TerminusException("You cannot specify both --db-only and --files-only");
         }
 
-        list($site, $env) = $this->getSiteEnv($site_env);
+        list($site, $env) = $this->getUnfrozenSiteEnv($site_env);
         $from_name = $env->getName();
         $target = $site->getEnvironments()->get($target_env);
         $to_name = $target->getName();

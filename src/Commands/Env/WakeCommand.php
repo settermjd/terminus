@@ -4,8 +4,8 @@ namespace Pantheon\Terminus\Commands\Env;
 
 use Pantheon\Terminus\Commands\TerminusCommand;
 use Pantheon\Terminus\Site\SiteAwareInterface;
-use Pantheon\Terminus\Site\SiteAwareTrait;
 use Pantheon\Terminus\Exceptions\TerminusException;
+use Pantheon\Terminus\Site\UnfrozenSiteAwareTrait;
 
 /**
  * Class WakeCommand
@@ -13,7 +13,7 @@ use Pantheon\Terminus\Exceptions\TerminusException;
  */
 class WakeCommand extends TerminusCommand implements SiteAwareInterface
 {
-    use SiteAwareTrait;
+    use UnfrozenSiteAwareTrait;
 
     /**
      * Wakes the environment by pinging it.
@@ -32,7 +32,7 @@ class WakeCommand extends TerminusCommand implements SiteAwareInterface
      */
     public function wake($site_env)
     {
-        list(, $env) = $this->getSiteEnv($site_env);
+        list(, $env) = $this->getUnfrozenSiteEnv($site_env);
         $data = $env->wake();
 
         // @TODO: Move the exceptions up the chain to the `wake` function. (One env is ported over).
