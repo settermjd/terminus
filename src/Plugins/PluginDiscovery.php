@@ -48,7 +48,7 @@ class PluginDiscovery implements ContainerAwareInterface, LoggerAwareInterface
                     } catch (TerminusException $e) {
                         $this->logger->warning(
                             'Plugin Discovery: Ignoring directory {dir} because: {msg}.',
-                            ['dir' => $dir->getPathName(), 'msg' => $e->getMessage()]
+                            ['dir' => $dir->getPathName(), 'msg' => $e->getMessage(),]
                         );
                     }
                 }
