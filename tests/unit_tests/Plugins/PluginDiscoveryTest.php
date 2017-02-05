@@ -53,6 +53,8 @@ class PluginDiscoveryTest extends \PHPUnit_Framework_TestCase
             $this->markTestIncomplete('Plugins not supported on Windows yet.');
         }
 
+        $unreadable_path = $this->plugins_dir . 'invalid-unreadable';
+        chmod($unreadable_path, 000);
 
         $paths = [
             $this->plugins_dir . 'invalid-composer-json',
@@ -64,6 +66,8 @@ class PluginDiscoveryTest extends \PHPUnit_Framework_TestCase
             $this->plugins_dir . 'with-namespace',
             $this->plugins_dir . 'without-namespace',
         ];
+
+        $this->assertEquals('fail', print_r(glob($this->plugins_dir . '/*'), true));
 
         $expected = [];
         $log = 0;
@@ -95,5 +99,7 @@ class PluginDiscoveryTest extends \PHPUnit_Framework_TestCase
 
         $actual = $this->discovery->discover();
         //$this->assertEquals($expected, $actual);
+
+        chmod($unreadable_path, 777);
     }
 }
